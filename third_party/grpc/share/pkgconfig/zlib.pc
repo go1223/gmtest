@@ -1,0 +1,13 @@
+prefix=/usr/local/grpc
+exec_prefix=/usr/local/grpc
+libdir=/usr/local/grpc/lib
+sharedlibdir=/usr/local/grpc/lib
+includedir=/usr/local/grpc/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.11
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}

@@ -1,0 +1,43 @@
+grpc编译
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local/grpc -DgRPC_BUILD_TESTS=OFF -DgRPC_INSTALL=ON -DBUILD_TESTING=off -DgRPC_SSL_PROVIDER=package
+
+查看pem中证书制作信息
+openssl x509 -in certs/server.pem -noout -text
+
+查看openssl支持的版本信息
+openssl s_client -help 2>&1 | awk '/-(ssl|tls)[0-9]/{print $1}'
+
+//检查通讯
+gmssl s_server -accept 44330 -key certs/server_sign.key -cert certs/server_sign.pem  -CAfile certs/ca.pem
+//检查通讯
+gmssl s_client -connect localhost:44330 -key certs/client.key -cert certs/client.pem -CAfile certs/ca.pem
+
+
+[GMTLS_DEBUG] set sm2 signing certificate
+[GMTLS_DEBUG] set sm2 signing private key
+CONNECTED(00000003)
+
+
+抓包分析内容
+tcpdump -i lo port 20000 -XX -vvv -nn
+
+gmssl制作证书
+
+//openssl查看支持的算法
+
+
+
+//grpc调试
+在同一个终端上运行export命令，导入环境变量即可开启c++版本grpc的调试输出模式
+export GRPC_VERBOSITY=DEBUG
+export GRPC_TRACE=all
+
+
+//grpc中源码改动
+D:\cvicse\客户支持\v9-sc\AIX\grpc\src\core\tsi\ssl_transport_security.h：301
+max_tls_version(tsi_tls_version::TSI_TLS1_3)->max_tls_version(tsi_tls_version::TSI_TLS1_2)
+或者
+vim ../src/core/tsi/ssl_transport_security.cc:931
+SSL_CTX_set_max_proto_version(ssl_context, TLS1_2_VERSION);
+//gpr_log(GPR_INFO, "TLS version is not supported.");
+//return TSI_FAILED_PRECONDITION;

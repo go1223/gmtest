@@ -1,0 +1,11 @@
+prefix=/usr/local/grpc
+exec_prefix=/usr/local/grpc
+libdir=/usr/local/grpc/lib64
+includedir=/usr/local/grpc/include
+
+Name: Protocol Buffers
+Description: Google's Data Interchange Format
+Version: 3.12.2.0
+Libs: -L${libdir} -lprotobuf-lite -lpthread
+Cflags: -I${includedir} -lpthread
+Conflicts: protobuf
